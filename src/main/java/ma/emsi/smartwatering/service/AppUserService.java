@@ -11,4 +11,6 @@ public interface AppUserService {
 	AppUser getUser(String username);
 	
 	List<AppUser> getUsers();
+
+
 }

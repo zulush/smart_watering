@@ -19,6 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +32,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import ma.emsi.smartwatering.model.AppUser;
+import ma.emsi.smartwatering.model.EspaceVert;
 import ma.emsi.smartwatering.service.AppUserService;
+import ma.emsi.smartwatering.service.EspaceVertService;
 
 @RestController @RequestMapping("/api/users")  @RequiredArgsConstructor
 public class AppUserController {
 
 	@Autowired
 	private AppUserService userService;
+	@Autowired
+	private EspaceVertService espaceSer;
 	
 	@GetMapping()
 	public ResponseEntity<List<AppUser>> getUsers(){
@@ -49,6 +54,35 @@ public class AppUserController {
 	public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user){
 		return ResponseEntity.ok().body(userService.saveUser(user));
 	}
+	
+	@GetMapping("/{username}/espace_vert")
+	public String getEspaceVert(@PathVariable("username") String username){
+	
+		return username;
+	}
+	
+	@PostMapping("/{username}/espace_vert")
+	public ResponseEntity<List<EspaceVert>> saveEspaceVert(@PathVariable("username") String username, @RequestBody EspaceVert espace){
+		System.out.println("username = " + username);
+		AppUser user = userService.getUser(username);
+		
+		if(user != null) {
+			for(EspaceVert e: user.getEspacesVerts()) {
+				if(e.getLibelle().equals(espace.getLibelle())) {
+					return null;
+				}
+			}
+		} else {
+			return null;
+		}
+		
+		espaceSer.saveEspaceVert(espace);
+		user.getEspacesVerts().add(espace);
+		userService.saveUser(user);
+		
+		return ResponseEntity.ok().body(user.getEspacesVerts());
+	}
+	
 	/*
 	@GetMapping("/token/refresh")
 	public void refrechToken(HttpServletRequest request, HttpServletResponse response) throws StreamWriteException, DatabindException, IOException{
