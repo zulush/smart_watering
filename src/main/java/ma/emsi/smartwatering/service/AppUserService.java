@@ -12,5 +12,9 @@ public interface AppUserService {
 	
 	List<AppUser> getUsers();
 
+	AppUser getUser(long id);
 
+	void supprimer(long id);
+
+	void test();
 }

@@ -43,6 +43,11 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService{
 	}
 	
 	@Override
+	public void test() {
+		System.out.println("hash : " + passwordEncoder.encode("user"));
+	}
+	
+	@Override
 	public AppUser saveUser(AppUser user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepo.save(user);
@@ -56,6 +61,16 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService{
 	@Override
 	public List<AppUser> getUsers() {
 		return userRepo.findAll();
+	}
+
+	@Override
+	public AppUser getUser(long id) {
+		return userRepo.getById(id);
+	}
+
+	@Override
+	public void supprimer(long id) {
+		userRepo.deleteById(id);
 	}
 
 	

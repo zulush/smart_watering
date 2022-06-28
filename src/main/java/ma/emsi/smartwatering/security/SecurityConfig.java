@@ -36,11 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/api/login**", "/api/users/token/refresh").permitAll();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().antMatchers(GET, "/api/farmer**").authenticated();
-		http.authorizeRequests().antMatchers(GET, "/api/users").hasAnyAuthority("ROLE_ADMIN");
-		http.authorizeRequests().antMatchers(POST, "/api/users**").hasAnyAuthority("ROLE_ADMIN");
-		http.authorizeRequests().antMatchers(GET, "/api/espace**").hasAnyAuthority("ROLE_ADMIN");
-		http.authorizeRequests().antMatchers(POST, "/api/espace**").hasAnyAuthority("ROLE_ADMIN");
+		/*http.authorizeRequests().antMatchers(GET, "/api/farmer", "/api/farmer/**").authenticated();
+		http.authorizeRequests().antMatchers(GET, "/api/users").hasAnyAuthority("ADMIN");
+		http.authorizeRequests().antMatchers(POST, "/api/users**").hasAnyAuthority("ADMIN");
+		http.authorizeRequests().antMatchers(GET, "/api/espace**").hasAnyAuthority("ADMIN");
+		http.authorizeRequests().antMatchers(POST, "/api/espace**").hasAnyAuthority("ADMIN");*/
 		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(customAuthentificationFilter);
 		http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);

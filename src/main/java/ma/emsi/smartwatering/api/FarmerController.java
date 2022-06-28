@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import ma.emsi.smartwatering.model.AppUser;
+import ma.emsi.smartwatering.model.Arrosage;
 import ma.emsi.smartwatering.model.EspaceVert;
+import ma.emsi.smartwatering.model.Grandeur;
+import ma.emsi.smartwatering.model.Installation;
+import ma.emsi.smartwatering.model.Plantage;
 import ma.emsi.smartwatering.model.Zone;
 import ma.emsi.smartwatering.service.AppUserService;
 import ma.emsi.smartwatering.service.EspaceVertService;
@@ -28,7 +32,7 @@ public class FarmerController {
 	
 	@GetMapping()
 	public AppUser getFarmer(){
-		
+		System.out.println("getFarmer is called!");
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
 		if (principal instanceof UserDetails) {
@@ -66,6 +70,62 @@ public class FarmerController {
 			for(Zone z: e.getZones()) {
 				if(z.getId() == id) {
 					return z;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	@GetMapping("/zone/{id}/boitiers")
+	public List<Installation> getZoneBoitier(@PathVariable("id") long id){
+		
+		for(EspaceVert e: this.getEspace()) {
+			for(Zone z: e.getZones()) {
+				if(z.getId() == id) {
+					return z.getInstallations();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	@GetMapping("/zone/{id}/arrosage")
+	public List<Arrosage> getZoneArrosage(@PathVariable("id") long id){
+		
+		for(EspaceVert e: this.getEspace()) {
+			for(Zone z: e.getZones()) {
+				if(z.getId() == id) {
+					return z.getArrosages();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	@GetMapping("/zone/{id}/plante")
+	public List<Plantage> getZonePlantes(@PathVariable("id") long id){
+		
+		for(EspaceVert e: this.getEspace()) {
+			for(Zone z: e.getZones()) {
+				if(z.getId() == id) {
+					return z.getPlantages();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	@GetMapping("/zone/{id}/grandeurs")
+	public List<Grandeur> getZoneGrandeurs(@PathVariable("id") long id){
+		
+		for(EspaceVert e: this.getEspace()) {
+			for(Zone z: e.getZones()) {
+				if(z.getId() == id) {
+					return z.getGrandeurs();
 				}
 			}
 		}
